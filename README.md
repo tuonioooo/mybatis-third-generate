@@ -78,5 +78,5 @@
 </plugin>
 ```
 > 注意：使用该插件时，需要加入build中，还需配置具体mvn 运行命令：
-1. mvn mybatis-generate:fmToGenerate  使用freemarker模板引擎生成代码
-2. mvn mybatis-generate:generate      使用velocity模板引擎生成代码
+> 1. mvn mybatis-generate:fmToGenerate  使用freemarker模板引擎生成代码 
+> 2. mvn mybatis-generate:generate      使用velocity模板引擎生成代码
