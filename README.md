@@ -77,11 +77,11 @@
 	</configuration>
 </plugin>
 ```
-> 注意：使用该插件时，需要加入build中，插件运行命令方式有两种：
-> 1.自定义运行命令
-> mvn mybatis-generate:fmToGenerate  使用freemarker模板引擎生成代码 
-> mvn mybatis-generate:generate      使用velocity模板引擎生成代码
+> 注意：使用该插件时，需要加入build中，插件运行命令方式有两种：  
+> 1.自定义运行命令  
+> mvn mybatis-generate:fmToGenerate  使用freemarker模板引擎生成代码   
+> mvn mybatis-generate:generate      使用velocity模板引擎生成代码  
 > 图例
 ![alt](2.png)
-> 2.通过自带的运行插件命令如图
+> 2.通过自带的运行插件命令如图  
 ![alt](3.png)
