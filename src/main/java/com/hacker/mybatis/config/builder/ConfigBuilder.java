@@ -413,6 +413,7 @@ public class ConfigBuilder {
      * @return 根据策略返回处理后的名称
      */
     private String processName(String name, NamingStrategy strategy) {
+        name = name.toLowerCase();
         String propertyName = "";
         if (strategy == NamingStrategy.remove_prefix_and_camel) {
             propertyName = NamingStrategy.removePrefixAndCamel(name);
