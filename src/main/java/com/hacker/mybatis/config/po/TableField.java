@@ -10,6 +10,7 @@ public class TableField {
     private boolean keyFlag;
     private String name;
     private String type;
+    private String capitalType;
     private String propertyName;
     private String capitalName;
     private String propertyType;
@@ -70,5 +71,21 @@ public class TableField {
 
     public String getCapitalName() {
         return propertyName.substring(0, 1).toUpperCase() + propertyName.substring(1);
+    }
+
+    public String getCapitalType() {
+        return capitalType;
+    }
+
+    public void setCapitalType(String capitalType) {
+        this.capitalType = capitalType;
+    }
+
+    public void setCapitalName(String capitalName) {
+        this.capitalName = capitalName;
+    }
+
+    public void setConvert(boolean convert) {
+        this.convert = convert;
     }
 }

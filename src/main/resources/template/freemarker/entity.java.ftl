@@ -1,34 +1,34 @@
 package ${package.Entity};
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.Column;
+import javax.persistence.Table;
+
 <#if table.hasDate??>
 import java.util.Date;
 </#if>
 import java.io.Serializable;
 
 /**
- * ${table.comment}
- * @author ${author}
- * @date ${date}
+ * <p> ${table.comment} </p>
+ *
+ * @author daizhao ${currentTime}
  */
-public class ${entity}{
+@Table(name = "${table.name}")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class ${entity}Entity{
 <#list table.fields as field>
 	<#if field.comment??>
 	/** ${field.comment} */
 	</#if>
+	@Column(name = "${field.name}")
 	private ${field.propertyType} ${field.propertyName};
-</#list>
-
-	public ${entity}(){
-
-	}
-
-<#list table.fields as field>
-	public ${field.propertyType} get${field.capitalName}(){
-		return ${field.propertyName};
-	}
-
-	public void set${field.capitalName}(${field.propertyType} ${field.propertyName}){
-		this.${field.propertyName} = ${field.propertyName};
-	}
 </#list>
 }

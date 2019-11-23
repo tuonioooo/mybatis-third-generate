@@ -135,9 +135,9 @@
                     <!-- 数据源配置，(必配) -->
                     <dataSource>
                         <driverName>com.mysql.jdbc.Driver</driverName>
-                        <url>jdbc:mysql://127.0.0.1:3306/document_admin?useUnicode=true&amp;useSSL=false</url>
+                        <url>jdbc:mysql://192.168.101.2:3306/man_robot_dev?useUnicode=true&amp;useSSL=false</url>
                         <username>root</username>
-                        <password>root</password>
+                        <password>unioncast.cn</password>
                     </dataSource>
                     <strategy>
                         <!-- 字段生成策略，四种类型，从名称就能看出来含义
@@ -146,7 +146,7 @@
                         remove_prefix,
                         remove_prefix_and_camel -->
                         <naming>underline_to_camel</naming>
-                        <!-- ID策略 是LONG还是STRING类型(默认stringtype)-->
+                        <!-- ID策略 是longtype还是stringtype类型(默认stringtype)-->
                         <serviceIdType>longtype</serviceIdType>
                         <!--Entity中的ID生成策略（默认 id_worker）-->
                         <idGenType>auto</idGenType>
@@ -154,7 +154,10 @@
                         <!--<superServiceClass>net.hyman.base.BaseService</superServiceClass>-->
                         <!-- 要包含的表 与exclude 二选一配置-->
                         <include>
-                            <property>epub_document</property>
+                            <!--<property>flow_category_t</property>-->
+                            <property>agent_recording_t</property>
+                            <property>word_sound_recording_t</property>
+                            <property>agent_group_statistics_t</property>
                             <!--<property>wp_terms</property>-->
                         </include>
                         <!-- 要排除的表 -->
@@ -165,7 +168,7 @@
                     </strategy>
                     <packageInfo>
                         <!-- 父级包名称，如果不写，下面的service等就需要写全包名(默认com.hacker) -->
-                        <parent>net.hyman</parent>
+                        <parent>com.unioncloud.manrobot.db</parent>
                         <!--service包名(默认service)-->
                         <service>service</service>
                         <!--serviceImpl包名(默认service.impl)-->

@@ -11,6 +11,10 @@ import java.nio.charset.Charset;
  */
 public class ConstVal {
 
+    public static final String TABLE_SUFFIX = "_t";
+
+    public static final String TABLE_SUFFIX_ENTITY = "T";
+
     public static final String DEFAULT_MIDDLE_DIR = "src\\test\\java";
     public static final String DEFAULT_PACKAGE_PARENT = "com.hacker";
 
@@ -47,6 +51,7 @@ public class ConstVal {
     public static final String TEMPLATE_SERVICEIMPL = "/template/serviceImpl.java.vm";
 
     public static final String FREEMARKER_TEMPLATE_ENTITY = "/entity.java.ftl";
+    public static final String FREEMARKER_TEMPLATE_MAPPER = "/mapper.java.ftl";
     public static final String FREEMARKER_TEMPLATE_MAPPER_XML = "/mapper.xml.ftl";
     public static final String FREEMARKER_TEMPLATE_SERVICE = "/service.java.ftl";
     public static final String FREEMARKER_TEMPLATE_CONTROLLER = "/controller.java.ftl";

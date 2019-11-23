@@ -48,7 +48,7 @@ public class ConfigBuilder {
     /**
      * ID的类型
      */
-    private  String idClassType;
+    private String idClassType;
 
     /**
      * 数据库表信息
@@ -122,12 +122,13 @@ public class ConfigBuilder {
      * 判断是否是自定义ID生成策略
      * 自定义生成策略：id_worker("ID_WORKER"), uuid("UUID"), input("INPUT");
      * 自动生成策略：auto("AUTO")
+     *
      * @return
      */
     public Boolean isStrategyKey() {
         return idType == IdStrategy.uuid.getValue() ||
-               idType == IdStrategy.id_worker.getValue() ||
-               idType == IdStrategy.input.getValue();
+                idType == IdStrategy.id_worker.getValue() ||
+                idType == IdStrategy.input.getValue();
     }
 
     /**
@@ -352,12 +353,22 @@ public class ConfigBuilder {
             //处理其它信息
             field.setName(results.getString(querySQL.getFieldName()));
             field.setType(results.getString(querySQL.getFieldType()));
+            //转换大写类型
+            field.setCapitalType(processMySqlTypeToUpperCase(processFiledType(field.getType())));
             field.setPropertyName(processName(field.getName(), strategy));
             field.setPropertyType(processFiledType(field.getType()));
             field.setComment(results.getString(querySQL.getFieldComment()));
             fieldList.add(field);
         }
         return fieldList;
+    }
+
+    public static void main(String[] args) {
+
+        String str = "int(10)";
+
+        System.out.println("str.substring(0, str.indexOf(\"(\")) = " + str.substring(0, str.indexOf("(")));
+
     }
 
 
@@ -433,7 +444,7 @@ public class ConfigBuilder {
      * @param type 字段类型
      * @return JAVA类型
      */
-        private String processMySqlType(String type) {
+    private String processMySqlType(String type) {
         String t = type.toLowerCase();
         if (t.contains("char")) {
             return "String";
@@ -457,6 +468,37 @@ public class ConfigBuilder {
             return "Double";
         }
         return "String";
+    }
+
+    /**
+     * MYSQL 数据表字段类型转换
+     * @param type 字段类型
+     * @return JAVA类型
+     */
+    private String processMySqlTypeToUpperCase(String type) {
+        String t = type.toLowerCase();
+        if (t.contains("char")) {
+            return "VARCHAR";
+        } else if (t.contains("bigint")) {
+            return "LONG";
+        } else if (t.contains("int")) {
+            return "INTEGER";
+        } else if (t.contains("date") || t.contains("timestamp")) {
+            return "DATE";
+        } else if (t.contains("text")) {
+            return "String";
+        } else if (t.contains("bit")) {
+            return "BOOLEAN";
+        } else if (t.contains("decimal")) {
+            return "BIGDECIMAL";
+        } else if (t.contains("blob")) {
+            return "byte[]";
+        } else if (t.contains("float")) {
+            return "FLOAT";
+        } else if (t.contains("double")) {
+            return "DOUBLE";
+        }
+        return "VARCHAR";
     }
 
     /**

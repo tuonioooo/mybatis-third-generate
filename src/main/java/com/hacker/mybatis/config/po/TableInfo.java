@@ -1,6 +1,7 @@
 package com.hacker.mybatis.config.po;
 
 
+import com.hacker.mybatis.config.ConstVal;
 import com.hacker.mybatis.config.StrategyConfig;
 import org.apache.commons.lang.StringUtils;
 
@@ -45,6 +46,13 @@ public class TableInfo {
     }
 
     public String getEntityName() {
+        try{
+            if(this.name.endsWith(ConstVal.TABLE_SUFFIX)){
+                return this.entityName.substring(0, this.entityName.lastIndexOf(ConstVal.TABLE_SUFFIX_ENTITY));
+            }
+        }catch (Exception e){
+            return entityName;
+        }
         return entityName;
     }
 

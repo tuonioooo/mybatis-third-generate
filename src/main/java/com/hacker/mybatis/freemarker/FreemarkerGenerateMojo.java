@@ -89,6 +89,7 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
         Map<String, Map<String,Object>> ctxData = new HashMap<String, Map<String,Object>>();
         String superClass = config.getSuperClass().substring(config.getSuperClass().lastIndexOf(".") + 1);
         String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+        String currentTime = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(new Date());
         for (TableInfo tableInfo : tableList) {
             Map<String,Object> ctx = new HashMap<String, Object>();
             ctx.put("package", packageInfo);
@@ -102,6 +103,7 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
             ctx.put("enableCache", isEnableCache());
             ctx.put("author", getAuthor());
             ctx.put("date", date);
+            ctx.put("currentTime", currentTime);
             ctxData.put(tableInfo.getEntityName(), ctx);
         }
         return ctxData;
@@ -145,7 +147,8 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
      */
     private void batchOutput(String entityName, Map<String,Object> context) {
         try {
-            String entityFile = String.format(outputFiles.get(ConstVal.ENTITY), entityName);
+            String entityFile = String.format(outputFiles.get(ConstVal.ENTITY), entityName.concat(ConstVal.ENTITY));
+            String mapperFile = String.format(outputFiles.get(ConstVal.MAPPER), entityName);
             String xmlFile = String.format(outputFiles.get(ConstVal.XML), entityName);
             String serviceFile = String.format(outputFiles.get(ConstVal.SERIVCE), entityName);
             String controllerFile = String.format(outputFiles.get(ConstVal.CONTROLLER), entityName);
@@ -153,6 +156,9 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
             // 根据override标识来判断是否需要创建文件
             if (isCreate(entityFile)) {
                 vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_ENTITY, entityFile);
+            }
+            if (isCreate(mapperFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_MAPPER, mapperFile);
             }
              if (isCreate(xmlFile)) {
                 vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_MAPPER_XML, xmlFile);
