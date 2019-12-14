@@ -42,6 +42,18 @@ public class PackageConfig {
     private String mapper;
 
     /**
+     * qo包名
+     */
+    @Parameter(defaultValue = "qo")
+    private String qo;
+
+    /**
+     * vo包名
+     */
+    @Parameter(defaultValue = "vo")
+    private String vo;
+
+    /**
      * Controller包名
      */
     @Parameter(defaultValue = "controller")
@@ -71,6 +83,14 @@ public class PackageConfig {
 
     public String getMapper() {
         return mapper;
+    }
+
+    public String getQo() {
+        return qo;
+    }
+
+    public String getVo() {
+        return vo;
     }
 
     public String getXml() {

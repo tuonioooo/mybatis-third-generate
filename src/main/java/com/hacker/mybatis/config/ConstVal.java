@@ -10,6 +10,8 @@ import java.nio.charset.Charset;
  * @since 2016/8/31
  */
 public class ConstVal {
+    /** 模板版本号 */
+    public static final String TEMPLATE_VERSION = "/template/freemarker-current";
 
     public static final String TABLE_SUFFIX = "_t";
 
@@ -24,6 +26,8 @@ public class ConstVal {
     public static final String SERVICEIMPL = "ServiceImpl";
     public static final String CONTROLLER = "Controller";
     public static final String MAPPER = "Mapper";
+    public static final String QO = "Request";
+    public static final String VO = "Response";
     public static final String XML = "Xml";
     public static final String HTML = "Html";
 
@@ -33,6 +37,8 @@ public class ConstVal {
     public static final String SERIVCE_PATH = "serivce_path";
     public static final String SERVICEIMPL_PATH = "serviceimpl_path";
     public static final String MAPPER_PATH = "mapper_path";
+    public static final String QO_PATH = "request_path";
+    public static final String VO_PATH = "response_path";
     public static final String XML_PATH = "xml_path";
     public static final String CONTROLLER_PATH = "controller_path";
     public static final String HTML_PATH = "html_path";
@@ -52,12 +58,16 @@ public class ConstVal {
 
     public static final String FREEMARKER_TEMPLATE_ENTITY = "/entity.java.ftl";
     public static final String FREEMARKER_TEMPLATE_MAPPER = "/mapper.java.ftl";
+    public static final String FREEMARKER_TEMPLATE_QO = "/request.java.ftl";
+    public static final String FREEMARKER_TEMPLATE_VO = "/response.java.ftl";
     public static final String FREEMARKER_TEMPLATE_MAPPER_XML = "/mapper.xml.ftl";
     public static final String FREEMARKER_TEMPLATE_SERVICE = "/service.java.ftl";
     public static final String FREEMARKER_TEMPLATE_CONTROLLER = "/controller.java.ftl";
 
     public static final String ENTITY_NAME = File.separator + "%s" + JAVA_SUFFIX;
     public static final String MAPPER_NAME = File.separator + "%s" + MAPPER + JAVA_SUFFIX;
+    public static final String QO_NAME = File.separator + "%s" + QO + JAVA_SUFFIX;
+    public static final String VO_NAME = File.separator + "%s" + VO + JAVA_SUFFIX;
     public static final String XML_NAME = File.separator + "%s" + MAPPER + XML_SUFFIX;
     public static final String SERVICE_NAME = File.separator + "%s" + SERIVCE + JAVA_SUFFIX;
     public static final String SERVICEIMPL_NAME = File.separator + "%s" + SERVICEIMPL + JAVA_SUFFIX;

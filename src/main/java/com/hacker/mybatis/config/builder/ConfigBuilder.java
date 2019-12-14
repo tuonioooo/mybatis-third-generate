@@ -1,7 +1,6 @@
 package com.hacker.mybatis.config.builder;
 
 
-import com.alibaba.fastjson.JSON;
 import com.hacker.mybatis.config.ConstVal;
 import com.hacker.mybatis.config.DataSourceConfig;
 import com.hacker.mybatis.config.PackageConfig;
@@ -10,10 +9,8 @@ import com.hacker.mybatis.config.po.TableField;
 import com.hacker.mybatis.config.po.TableInfo;
 import com.hacker.mybatis.config.rules.*;
 import org.apache.commons.lang.StringUtils;
-import org.apache.maven.plugins.annotations.Parameter;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -153,6 +150,8 @@ public class ConfigBuilder {
         packageInfo.put(ConstVal.PACKAGE_PARENT, package_parent);
         packageInfo.put(ConstVal.ENTITY, joinPackage(package_parent, config.getEntity()));
         packageInfo.put(ConstVal.MAPPER, joinPackage(package_parent, config.getMapper()));
+        packageInfo.put(ConstVal.QO, joinPackage(package_parent, config.getQo()));
+        packageInfo.put(ConstVal.VO, joinPackage(package_parent, config.getVo()));
         packageInfo.put(ConstVal.XML, joinPackage(package_parent, config.getXml()));
         packageInfo.put(ConstVal.SERIVCE, joinPackage(package_parent, config.getService()));
         packageInfo.put(ConstVal.SERVICEIMPL, joinPackage(package_parent, config.getServiceImpl()));
@@ -162,6 +161,8 @@ public class ConfigBuilder {
 
         pathInfo.put(ConstVal.ENTITY_PATH, joinPath(outputDir, packageInfo.get(ConstVal.ENTITY)));
         pathInfo.put(ConstVal.MAPPER_PATH, joinPath(outputDir, packageInfo.get(ConstVal.MAPPER)));
+        pathInfo.put(ConstVal.QO_PATH, joinPath(outputDir, packageInfo.get(ConstVal.QO)));
+        pathInfo.put(ConstVal.VO_PATH, joinPath(outputDir, packageInfo.get(ConstVal.VO)));
         pathInfo.put(ConstVal.XML_PATH, joinPath(outputDir, packageInfo.get(ConstVal.XML)));
         pathInfo.put(ConstVal.SERIVCE_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERIVCE)));
         pathInfo.put(ConstVal.SERVICEIMPL_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERVICEIMPL)));
@@ -236,6 +237,8 @@ public class ConfigBuilder {
         for (TableInfo tableInfo : tableList) {
             tableInfo.setEntityName(capitalFirst(processName(tableInfo.getName(), strategy)));
             tableInfo.setMapperName(tableInfo.getEntityName() + ConstVal.MAPPER);
+            tableInfo.setQoName(tableInfo.getEntityName() + ConstVal.QO);
+            tableInfo.setVoName(tableInfo.getEntityName() + ConstVal.VO);
             tableInfo.setXmlName(tableInfo.getMapperName());
             tableInfo.setServiceName(tableInfo.getEntityName() + ConstVal.SERIVCE);
             tableInfo.setServiceImplName(tableInfo.getEntityName() + ConstVal.SERVICEIMPL);

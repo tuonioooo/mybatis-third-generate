@@ -134,6 +134,8 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
         Map<String, String> pathInfo = config.getPathInfo();
         outputFiles.put(ConstVal.ENTITY, pathInfo.get(ConstVal.ENTITY_PATH) + ConstVal.ENTITY_NAME);
         outputFiles.put(ConstVal.MAPPER, pathInfo.get(ConstVal.MAPPER_PATH) + ConstVal.MAPPER_NAME);
+        outputFiles.put(ConstVal.QO, pathInfo.get(ConstVal.QO_PATH) + ConstVal.QO_NAME);
+        outputFiles.put(ConstVal.VO, pathInfo.get(ConstVal.VO_PATH) + ConstVal.VO_NAME);
         outputFiles.put(ConstVal.XML, pathInfo.get(ConstVal.XML_PATH) + ConstVal.XML_NAME);
         outputFiles.put(ConstVal.SERIVCE, pathInfo.get(ConstVal.SERIVCE_PATH) + ConstVal.SERVICE_NAME);
         outputFiles.put(ConstVal.SERVICEIMPL, pathInfo.get(ConstVal.SERVICEIMPL_PATH) + ConstVal.SERVICEIMPL_NAME);
@@ -149,6 +151,8 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
         try {
             String entityFile = String.format(outputFiles.get(ConstVal.ENTITY), entityName.concat(ConstVal.ENTITY));
             String mapperFile = String.format(outputFiles.get(ConstVal.MAPPER), entityName);
+            String qoFile = String.format(outputFiles.get(ConstVal.QO), entityName);
+            String voFile = String.format(outputFiles.get(ConstVal.VO), entityName);
             String xmlFile = String.format(outputFiles.get(ConstVal.XML), entityName);
             String serviceFile = String.format(outputFiles.get(ConstVal.SERIVCE), entityName);
             String controllerFile = String.format(outputFiles.get(ConstVal.CONTROLLER), entityName);
@@ -160,6 +164,12 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
             if (isCreate(mapperFile)) {
                 vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_MAPPER, mapperFile);
             }
+            if (isCreate(qoFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_QO, qoFile);
+            }
+            if (isCreate(voFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_VO, voFile);
+            }
              if (isCreate(xmlFile)) {
                 vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_MAPPER_XML, xmlFile);
             }
@@ -169,8 +179,6 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
             if (isCreate(controllerFile)) {
                 vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_CONTROLLER, controllerFile);
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         } catch (TemplateException e) {
             e.printStackTrace();
         }
@@ -182,15 +190,20 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
      * @param templatePath 模板文件
      * @param outputFile   文件生成的目录
      */
-    private void vmToFile(Map<String,Object> context, String templatePath, String outputFile) throws IOException, TemplateException {
-        Configuration freemarker = getFreemarkerEngine();
-        Template template = engine.getTemplate(templatePath, ConstVal.UTF8);
-        System.out.println(template.getName());
-        FileOutputStream fos = new FileOutputStream(outputFile);
-        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos, ConstVal.UTF8));
-        template.process(context, writer);
-        writer.close();
-        log.info("模板:" + templatePath + ";  文件:" + outputFile);
+    private void vmToFile(Map<String,Object> context, String templatePath, String outputFile) throws TemplateException{
+        Configuration engine = getFreemarkerEngine();
+        try{
+            Template template = engine.getTemplate(templatePath, ConstVal.UTF8);
+            System.out.println(template.getName());
+            FileOutputStream fos = new FileOutputStream(outputFile);
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(fos, ConstVal.UTF8));
+            template.process(context, writer);
+            writer.close();
+            log.info("模板:" + templatePath + ";  文件:" + outputFile);
+        }catch (IOException e){
+            log.error("【模板:" + templatePath + "】, 不存在");
+            return;
+        }
     }
 
     /**
@@ -198,12 +211,12 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
      */
     private Configuration getFreemarkerEngine() {
         if (engine == null) {
-            engine = new Configuration();
+            engine = new Configuration(Configuration.VERSION_2_3_25);
             try {
                 //加载class内的资源
                 //engine.setDirectoryForTemplateLoading(new File(FreemarkerGenerateMojo.class.getProtectionDomain().getCodeSource().getLocation().getPath() + "/template/freemarker"));
                 //加载jar包内的资源
-                engine.setClassForTemplateLoading(FreemarkerGenerateMojo.class,"/template/freemarker");
+                engine.setClassForTemplateLoading(FreemarkerGenerateMojo.class, ConstVal.TEMPLATE_VERSION);
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();

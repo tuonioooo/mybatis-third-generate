@@ -88,4 +88,12 @@ public class TableField {
     public void setConvert(boolean convert) {
         this.convert = convert;
     }
+
+    /**
+     * 判断属性字段中是否包含日期类型
+     * @return 是否
+     */
+    public boolean isHasDate() {
+        return this.getPropertyType().equals("Date");
+    }
 }

@@ -20,6 +20,8 @@ public class TableInfo {
 
     private String entityName;
     private String mapperName;
+    private String qoName;
+    private String voName;
     private String xmlName;
     private String serviceName;
     private String serviceImplName;
@@ -98,6 +100,22 @@ public class TableInfo {
 
     public void setFields(List<TableField> fields) {
         this.fields = fields;
+    }
+
+    public String getQoName() {
+        return qoName;
+    }
+
+    public void setQoName(String qoName) {
+        this.qoName = qoName;
+    }
+
+    public String getVoName() {
+        return voName;
+    }
+
+    public void setVoName(String voName) {
+        this.voName = voName;
     }
 
     /**
