@@ -35,10 +35,7 @@ public class ${entity}Request extends BasePage {
         * 操作人姓名
         */
         private String opName;
-        /**
-        * 租户Id
-        */
-        private Integer tenantId;
+
 
         public interface Insert{
 

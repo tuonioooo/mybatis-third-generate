@@ -39,7 +39,7 @@ public class ${entity}Controller extends BaseController {
 		}
 	}
 
-	private ResultData saveOrUpdate(NovelCategoryRequest novelCategoryRequest, BindingResult bindingResult){
+	private ResultData saveOrUpdate(${table.qoName} ${table.qoName?uncap_first}, BindingResult bindingResult){
 		${table.qoName?uncap_first}.setTenantId(getTenantId());
 		${table.qoName?uncap_first}.setOpId(getUserId());
 		${table.qoName?uncap_first}.setOpName(getUserName());

@@ -6,6 +6,8 @@ import ${package.Entity}.Page;
 import ${package.Parent}.dao.DaoSupport;
 import ${package.Parent}.utils.DateUtil;
 import org.slf4j.Logger;
+import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +55,12 @@ public class ${entity}Service{
     @Transactional(rollbackFor = Exception.class)
     public ResultData saveOrUpdate(${table.qoName} ${table.qoName?uncap_first}) {
         ${entity}Entity ${entity?uncap_first}Entity;
-        if (StringUtils.isBlank(${table.qoName?uncap_first}.getId())) {
+        if (Objects.isNull(${table.qoName?uncap_first}.getId())) {
             //新增
             ${entity?uncap_first}Entity = new ${entity}Entity();
             this.setAddOrUpdateAttributes(${entity?uncap_first}Entity, ${table.qoName?uncap_first});
             ${table.mapperName?uncap_first}.insert(${entity?uncap_first}Entity);
+            return ResultData.success("新增成功");
         } else {
             //修改
             ${entity?uncap_first}Entity = ${table.mapperName?uncap_first}.selectByPrimaryKey(${table.qoName?uncap_first}.getId());
@@ -66,8 +69,8 @@ public class ${entity}Service{
             }
             this.setAddOrUpdateAttributes(${entity?uncap_first}Entity, ${table.qoName?uncap_first});
             ${table.mapperName?uncap_first}.updateByPrimaryKey(${entity?uncap_first}Entity);
+            return ResultData.success("编辑成功");
         }
-        return ResultData.success("保存成功");
     }
 
     private void setAddOrUpdateAttributes(${entity}Entity ${entity?uncap_first}Entity, ${table.qoName} ${table.qoName?uncap_first}) {

@@ -23,7 +23,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class ${entity}Entity{
+public class ${entity}Entity extends BaseEntity {
 <#list table.fields as field>
 	<#if field.comment??>
 	/** ${field.comment} */

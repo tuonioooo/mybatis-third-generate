@@ -155,7 +155,10 @@
                         <!-- 要包含的表 与exclude 二选一配置-->
                         <include>
                             <!--<property>flow_category_t</property>-->
-                            <property>novel_category_t</property>
+                            <property>author_t</property>
+                            <property>hot_word_t</property>
+                            <property>novel_comment_t</property>
+                            <property>novel_t</property>
                             <!--<property>wp_terms</property>-->
                         </include>
                         <!-- 要排除的表 -->
