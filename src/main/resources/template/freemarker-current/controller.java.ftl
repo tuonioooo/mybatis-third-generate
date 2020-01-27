@@ -40,13 +40,10 @@ public class ${entity}Controller extends BaseController {
 	}
 
 	private ResultData saveOrUpdate(${table.qoName} ${table.qoName?uncap_first}, BindingResult bindingResult){
-		${table.qoName?uncap_first}.setTenantId(getTenantId());
-		${table.qoName?uncap_first}.setOpId(getUserId());
-		${table.qoName?uncap_first}.setOpName(getUserName());
-		if (bindingResult.hasErrors()) {
-			return ResultData.failMsg(bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(",")));
-		}
-		return ${entity?uncap_first}Service.saveOrUpdate(${table.qoName?uncap_first});
+		super.setOp(${table.qoName?uncap_first});
+		return bindingResult.hasErrors()
+				? ResultData.failMsg(bindingResult.getAllErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage).collect(Collectors.joining(",")))
+				: ${entity?uncap_first}Service.saveOrUpdate(${table.qoName?uncap_first});
 	}
 
 	@PostMapping("/${entity?uncap_first}/getDetailById")
