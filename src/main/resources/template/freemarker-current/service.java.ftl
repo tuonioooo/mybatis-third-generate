@@ -74,8 +74,15 @@ public class ${entity}Service{
     }
 
     private void setAddOrUpdateAttributes(${entity}Entity ${entity?uncap_first}Entity, ${table.qoName} ${table.qoName?uncap_first}) {
+        if(Objects.isNull(${table.qoName?uncap_first}.getId())){
+            ${entity?uncap_first}Entity.setCreatorId(${table.qoName?uncap_first}.getOpId());
+            ${entity?uncap_first}Entity.setCreatorName(${table.qoName?uncap_first}.getOpName());
+        }else {
+            ${entity?uncap_first}Entity.setUpdateId(${table.qoName?uncap_first}.getOpId());
+            ${entity?uncap_first}Entity.setUpdateName(${table.qoName?uncap_first}.getOpName());
+        }
         <#list table.fields as field>
-        <#if field.propertyName == "remove" || field.propertyType == "Date" || field.propertyName == "id">
+        <#if field.propertyName == "remove" || field.propertyType == "Date" || field.propertyName == "id" || field.propertyName == "creatorId" || field.propertyName == "creatorName" || field.propertyName == "updateId" || field.propertyName == "updateName">
         <#else>
             ${entity?uncap_first}Entity.set${field.propertyName?cap_first}(${table.qoName?uncap_first}.get${field.propertyName?cap_first}());
         </#if>
@@ -103,9 +110,7 @@ public class ${entity}Service{
         ${entity}Entity entity = ${table.mapperName?uncap_first}.selectByPrimaryKey(id);
         return ResultData.success(${entity}Response.builder()
                 <#list table.fields as field>
-                <#if field.propertyType == "Date">
-                .${field.propertyName}Str(DateUtils.localDateTimeFormat(entity.get${field.propertyName?cap_first}(), "yyyy-MM-dd HH:mm:ss"))
-                <#elseif field.propertyName == "remove">
+                <#if field.propertyName == "remove">
                 <#else>
                 .${field.propertyName}(entity.get${field.propertyName?cap_first}())
                 </#if>
@@ -117,16 +122,20 @@ public class ${entity}Service{
         if(StringUtils.isBlank(name)){
             return ResultData.failMsg("名称不能为空");
         }
-        Example example = new Example(${entity}Entity.class);
-        Example.Criteria criteria = example.createCriteria();
-        criteria.andEqualTo("name", name);
-        if(Objects.nonNull(id)){
-            criteria.andNotEqualTo("id", id);
-        }
-        List<${entity}Entity> entities = ${table.mapperName?uncap_first}.selectByExample(example);
+        List<${entity}Entity> entities = this.findListByTitle(name, id);
             return entities.size() > 0
             ? ResultData.failMsg("名称已存在")
             : ResultData.success("名称可用");
+    }
+
+    public List<${entity}Entity> findListByTitle(String name, Integer id){
+        Example example = new Example(${entity}Entity.class);
+        Example.Criteria criteria = example.createCriteria();
+        criteria.andEqualTo("name", title);
+        if(Objects.nonNull(id)){
+            criteria.andNotEqualTo("id", id);
+        }
+        return ${table.mapperName?uncap_first}.selectByExample(example);
     }
 
 }

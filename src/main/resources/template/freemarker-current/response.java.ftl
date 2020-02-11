@@ -21,7 +21,7 @@ public class ${entity}Response{
         <#if field.comment??>
         /** ${field.comment} */
         </#if>
-        private String ${field.propertyName}Str;
+        private LocalDateTime ${field.propertyName};
     <#elseif field.propertyName == "remove">
     <#else>
         <#if field.comment??>
