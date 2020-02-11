@@ -38,9 +38,7 @@ public class ${entity}Service{
                 List<${table.voName}> result = pageInfo.getList().stream().map(entity ->
                     ${table.voName}.builder()
                     <#list table.fields as field>
-                    <#if field.propertyType == "Date">
-                    .${field.propertyName}Str(DateUtils.localDateTimeFormat(entity.get${field.propertyName?cap_first}(), "yyyy-MM-dd HH:mm:ss"))
-                    <#elseif field.propertyName == "remove">
+                    <#if field.propertyName == "remove">
                     <#else>
                     .${field.propertyName}(entity.get${field.propertyName?cap_first}())
                     </#if>

@@ -156,7 +156,7 @@
                         <include>
                             <!--<property>flow_category_t</property>-->
                             <!--<property>novel_site</property>-->
-                            <property>pay_channel_t</property>
+                            <property>pay_package_t</property>
                             <!--<property>hot_word_t</property>
                             <property>novel_comment_t</property>
                             <property>novel_t</property>-->
