@@ -58,7 +58,7 @@ public class ${entity}Service{
             ${entity?uncap_first}Entity = new ${entity}Entity();
             this.setAddOrUpdateAttributes(${entity?uncap_first}Entity, ${table.qoName?uncap_first});
             ${table.mapperName?uncap_first}.insert(${entity?uncap_first}Entity);
-            return ResultData.success("新增成功");
+            return ResultData.successMsg("新增成功");
         } else {
             //修改
             ${entity?uncap_first}Entity = ${table.mapperName?uncap_first}.selectByPrimaryKey(${table.qoName?uncap_first}.getId());
@@ -67,7 +67,7 @@ public class ${entity}Service{
             }
             this.setAddOrUpdateAttributes(${entity?uncap_first}Entity, ${table.qoName?uncap_first});
             ${table.mapperName?uncap_first}.updateByPrimaryKey(${entity?uncap_first}Entity);
-            return ResultData.success("编辑成功");
+            return ResultData.successMsg("编辑成功");
         }
     }
 
@@ -94,7 +94,7 @@ public class ${entity}Service{
                 return ResultData.failMsg("id不能为空");
             }
             ${table.mapperName?uncap_first}.deleteByPrimaryKey(id);
-            return ResultData.success("删除成功");
+            return ResultData.successMsg("删除成功");
         } catch (Exception e) {
             log.error("删除异常", e);
             return ResultData.failMsg("删除异常");
@@ -123,7 +123,7 @@ public class ${entity}Service{
         List<${entity}Entity> entities = this.findListByTitle(name, id);
             return entities.size() > 0
             ? ResultData.failMsg("名称已存在")
-            : ResultData.success("名称可用");
+            : ResultData.successMsg("名称可用");
     }
 
     public List<${entity}Entity> findListByTitle(String name, Integer id){
