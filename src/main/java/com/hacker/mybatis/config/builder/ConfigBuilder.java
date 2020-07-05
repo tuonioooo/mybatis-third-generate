@@ -235,7 +235,8 @@ public class ConfigBuilder {
      */
     private List<TableInfo> processTable(List<TableInfo> tableList, NamingStrategy strategy) {
         for (TableInfo tableInfo : tableList) {
-            tableInfo.setEntityName(capitalFirst(processName(tableInfo.getName(), strategy)));
+            String tempName = capitalFirst(processName(tableInfo.getName(), strategy));
+            tableInfo.setEntityName(customerEntity(tempName));
             tableInfo.setMapperName(tableInfo.getEntityName() + ConstVal.MAPPER);
             tableInfo.setQoName(tableInfo.getEntityName() + ConstVal.QO);
             tableInfo.setVoName(tableInfo.getEntityName() + ConstVal.VO);
@@ -542,10 +543,16 @@ public class ConfigBuilder {
         return QuerySQL.MYSQL;
     }
 
+    private String customerEntity(String name){
+        if (StringUtils.isNotBlank(name) && name.contains("t")) {
+            return name.replace("t", "");
+        }
+        return "";
+    }
+
 
     /**
      * 实体首字母大写
-     *
      * @param name 待转换的字符串
      * @return 转换后的字符串
      */
@@ -554,6 +561,36 @@ public class ConfigBuilder {
             return name.substring(0, 1).toUpperCase() + name.substring(1);
         }
         return "";
+    }
+
+    /**
+     * 首字母转小写
+     * @param s
+     * @return
+     */
+    public String toLowerCaseFirst(String s){
+        if(StringUtils.isEmpty(s)){
+            return "";
+        }
+        if(Character.isLowerCase(s.charAt(0)))
+            return s;
+        else
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+    }
+
+    /**
+     * 首字母转大写
+     * @param s
+     * @return
+     */
+    public String toUpperCaseFirst(String s){
+        if(StringUtils.isEmpty(s)){
+            return "";
+        }
+        if(Character.isUpperCase(s.charAt(0)))
+            return s;
+        else
+            return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
     }
 
     public Connection getConnection() {

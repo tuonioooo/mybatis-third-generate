@@ -135,7 +135,7 @@
                     <!-- 数据源配置，(必配) -->
                     <dataSource>
                         <driverName>com.mysql.jdbc.Driver</driverName>
-                        <url>jdbc:mysql://localhost:3306/us_novel_dev?useUnicode=true&amp;useSSL=false</url>
+                        <url>jdbc:mysql://localhost:3306/novel_mp?useUnicode=true&amp;useSSL=false</url>
                         <username>root</username>
                         <password>root</password>
                     </dataSource>
@@ -155,8 +155,19 @@
                         <!-- 要包含的表 与exclude 二选一配置-->
                         <include>
                             <!--<property>flow_category_t</property>-->
-                            <!--<property>novel_site</property>-->
-                            <property>pay_member_package_t</property>
+                            <property>novel_site_t</property>
+                            <!--<property>permission_group_permission_r</property>-->
+                            <!--<property>permission_group_t</property>-->
+                            <!--<property>permission_t</property>-->
+                            <!--<property>role_group_t</property>-->
+                            <!--<property>role_permissions_group_r</property>-->
+                            <!--<property>role_role_group_r</property>-->
+                            <!--<property>role_t</property>-->
+                            <!--<property>system_t</property>-->
+                            <!--<property>tenant</property>-->
+                            <!--<property>user</property>-->
+                            <!--<property>user_role_group_r</property>-->
+                            <!--<property>user_system_r</property>-->
                             <!--<property>hot_word_t</property>
                             <property>novel_comment_t</property>
                             <property>novel_t</property>-->
@@ -170,7 +181,7 @@
                     </strategy>
                     <packageInfo>
                         <!-- 父级包名称，如果不写，下面的service等就需要写全包名(默认com.hacker) -->
-                        <parent>com.novelcloud.novel.db</parent>
+                        <parent>com.novelmp.db</parent>
                         <!--service包名(默认service)-->
                         <service>service</service>
                         <!--serviceImpl包名(默认service.impl)-->
