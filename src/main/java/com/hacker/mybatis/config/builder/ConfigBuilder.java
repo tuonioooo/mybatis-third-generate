@@ -235,7 +235,7 @@ public class ConfigBuilder {
      */
     private List<TableInfo> processTable(List<TableInfo> tableList, NamingStrategy strategy) {
         for (TableInfo tableInfo : tableList) {
-            String tempName = capitalFirst(processName(tableInfo.getName(), strategy));
+            String tempName = handleSuffixT(capitalFirst(processName(tableInfo.getName(), strategy)));
             tableInfo.setEntityName(tempName);
             tableInfo.setMapperName(tableInfo.getEntityName() + ConstVal.MAPPER);
             tableInfo.setQoName(tableInfo.getEntityName() + ConstVal.QO);
@@ -550,12 +550,25 @@ public class ConfigBuilder {
      */
     private String capitalFirst(String name) {
         if (StringUtils.isNotBlank(name)) {
-            String temp = name.substring(0, 1).toUpperCase() + name.substring(1);
-            return temp.endsWith("t")
-                    ? temp.substring(0, temp.length()-1)
-                    : temp;
+            return name.substring(0, 1).toUpperCase() + name.substring(1);
         }
         return "";
+    }
+
+    /**
+     * 处理结尾为T的表
+     * @param name
+     * @return
+     */
+    private String handleSuffixT(String name){
+        if (StringUtils.isBlank(name)) {
+            return "";
+        }
+        StringBuilder stringBuilder = new StringBuilder();
+        if(name.endsWith("t") || name.endsWith("T")){
+            stringBuilder.append(name, 0, name.length()-1);
+        }
+        return stringBuilder.toString();
     }
 
     /**
