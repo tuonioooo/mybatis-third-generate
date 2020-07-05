@@ -236,7 +236,7 @@ public class ConfigBuilder {
     private List<TableInfo> processTable(List<TableInfo> tableList, NamingStrategy strategy) {
         for (TableInfo tableInfo : tableList) {
             String tempName = capitalFirst(processName(tableInfo.getName(), strategy));
-            tableInfo.setEntityName(customerEntity(tempName));
+            tableInfo.setEntityName(tempName);
             tableInfo.setMapperName(tableInfo.getEntityName() + ConstVal.MAPPER);
             tableInfo.setQoName(tableInfo.getEntityName() + ConstVal.QO);
             tableInfo.setVoName(tableInfo.getEntityName() + ConstVal.VO);
@@ -543,14 +543,6 @@ public class ConfigBuilder {
         return QuerySQL.MYSQL;
     }
 
-    private String customerEntity(String name){
-        if (StringUtils.isNotBlank(name) && name.contains("t")) {
-            return name.replace("t", "");
-        }
-        return "";
-    }
-
-
     /**
      * 实体首字母大写
      * @param name 待转换的字符串
@@ -558,7 +550,10 @@ public class ConfigBuilder {
      */
     private String capitalFirst(String name) {
         if (StringUtils.isNotBlank(name)) {
-            return name.substring(0, 1).toUpperCase() + name.substring(1);
+            String temp = name.substring(0, 1).toUpperCase() + name.substring(1);
+            return temp.endsWith("t")
+                    ? temp.substring(0, temp.length()-1)
+                    : temp;
         }
         return "";
     }
