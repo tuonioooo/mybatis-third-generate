@@ -18,7 +18,7 @@ data: stringify(params),
 * 查询——名称查重接口
 * @param params
 */
-export async function edit${tsNameUpperFirst}Name(params:{}): Promise<any>{
+export async function exist${tsNameUpperFirst}Name(params:{}): Promise<any>{
 return request(`${r"${"}Constant.baseUrl${r"}"}/${tsNameLowerFirst}/exist`, {
 method: 'POST',
 data: stringify(params),
@@ -51,7 +51,7 @@ data: stringify(params),
 * 编辑
 * @param params
 */
-export async function edit${tsNameUpperFirst}Name(params:{}) {
+export async function edit${tsNameUpperFirst}(params:{}) {
 return request(`${r"${"}Constant.baseUrl${r"}"}/${tsNameLowerFirst}/edit`, {
 method: 'POST',
 data: stringify(params),

@@ -89,11 +89,11 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     * @param props
     */
     const validatorExist =  (rule: any, name: string, callback: (message?: string) => void) => {
-        if(name){
-          callback();
+        if(!name){
+            callback();
         }
         let payload = {name: name};
-        edit${tsNameUpperFirst}Name(payload).then(res => {
+        exist${tsNameUpperFirst}Name(payload).then(res => {
         if (res.code == 200) {
             callback();
         } else {

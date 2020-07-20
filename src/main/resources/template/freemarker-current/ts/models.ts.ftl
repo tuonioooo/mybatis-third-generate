@@ -2,7 +2,7 @@ import {Effect, Reducer} from "@@/plugin-dva/connect";
 import {ResultData} from "@/utils/types";
 import {get${tsNameUpperFirst}, add${tsNameUpperFirst}, edit${tsNameUpperFirst}, del${tsNameUpperFirst}} from "@/services/${tsNameLowerFirst}";
 import { message } from "antd";
-
+import { Constant } from "@/utils/constant";
 
 export interface ModelType {
     namespace: string;
@@ -70,6 +70,7 @@ const ${tsNameUpperFirst}Model: ModelType={
                 result.msg && message.error(result.msg);
             }
         },
+    },
     reducers:{
         store(state, {payload}) {
             return {...state, ...payload};

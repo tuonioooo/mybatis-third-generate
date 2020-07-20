@@ -156,6 +156,11 @@
                         <include>
                             <!--<property>flow_category_t</property>-->
                             <property>novel_site_t</property>
+                            <property>author_t</property>
+                            <property>novel_comment_t</property>
+                            <property>novel_t</property>
+                            <property>hot_word_t</property>
+                            <property>novel_category_t</property>
                             <!--<property>permission_group_permission_r</property>-->
                             <!--<property>permission_group_t</property>-->
                             <!--<property>permission_t</property>-->

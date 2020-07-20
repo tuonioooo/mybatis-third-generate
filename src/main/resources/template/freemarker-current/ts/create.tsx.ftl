@@ -7,7 +7,7 @@ ${tsNameUpperFirst}FormItemList
 import {ModalFormOptionProps, ResultData} from "@/utils/types";
 import { connect, Dispatch } from "umi";
 import VerticalFormItem from "@/components/VerticalFormItem";
-import {exist${tsNameLowerFirst}Name} from "@/services/${tsNameLowerFirst}";
+import {exist${tsNameUpperFirst}Name} from "@/services/${tsNameLowerFirst}";
 
 
 export interface ModalDispatchFormOptionProps extends ModalFormOptionProps<${tsNameUpperFirst}FormItem> {
@@ -80,11 +80,8 @@ const CreateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     * @param props
     */
     const validatorExist =  (rule: any, name: string, callback: (message?: string) => void) => {
-        if(name){
-            callback();
-        }
         let payload = {username: name};
-        edit${tsNameUpperFirst}Name(payload).then(res => {
+        exist${tsNameUpperFirst}Name(payload).then(res => {
             if (res.code == 200) {
                 callback();
             } else {
