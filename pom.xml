@@ -196,6 +196,13 @@
                         <xml>mapper.xml</xml>
                         <!--controller包名(默认controller)-->
                         <controller>controller</controller>
+
+
+                        <!-- ts 前端组件包 生成 -->
+                        <tsPages>ts.pages</tsPages>
+                        <tsPagesComponent>components</tsPagesComponent>
+                        <tsModels>ts.models</tsModels>
+                        <tsServices>ts.services</tsServices>
                     </packageInfo>
                     <student>
                         <name>allen</name>

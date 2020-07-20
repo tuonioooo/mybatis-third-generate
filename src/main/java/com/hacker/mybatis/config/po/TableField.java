@@ -14,8 +14,18 @@ public class TableField {
     private String propertyName;
     private String capitalName;
     private String propertyType;
+    private String tsPropertyType;
     private String comment;
     private boolean convert;
+
+
+    public String getTsPropertyType() {
+        return tsPropertyType;
+    }
+
+    public void setTsPropertyType(String tsPropertyType) {
+        this.tsPropertyType = tsPropertyType;
+    }
 
     public boolean isKeyFlag() {
         return keyFlag;

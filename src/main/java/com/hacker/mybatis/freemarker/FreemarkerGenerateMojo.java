@@ -6,6 +6,7 @@ import com.hacker.mybatis.config.ConstVal;
 import com.hacker.mybatis.config.builder.ConfigBuilder;
 import com.hacker.mybatis.config.po.TableInfo;
 import freemarker.template.TemplateException;
+import org.apache.commons.lang.StringUtils;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.Mojo;
@@ -39,7 +40,7 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
         // 初始化配置
         initConfig();
         // 初始化输出文件路径模板
-        initOutputFiles();
+        initOutputFiles(config);
         // 创建输出文件路径
         mkdirs(config.getPathInfo());
         // 获取上下文
@@ -95,6 +96,9 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
             ctx.put("package", packageInfo);
             ctx.put("table", tableInfo);
             ctx.put("entity", tableInfo.getEntityName());
+            ctx.put("tsNameUpperFirst", tableInfo.getTsNameUpperFirst());
+            ctx.put("tsNameLowerFirst", toLowerCaseFirst(tableInfo.getTsNameUpperFirst()));
+            ctx.put("entityLowerCase", toLowerCaseFirst(tableInfo.getEntityName()));//首字母小写
             ctx.put("idGenType", config.getIdType());
             ctx.put("isStrategyKey", config.isStrategyKey());
             ctx.put("idClassType", config.getIdClassType());
@@ -107,6 +111,36 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
             ctxData.put(tableInfo.getEntityName(), ctx);
         }
         return ctxData;
+    }
+
+    /**
+     * 首字母转小写
+     * @param s
+     * @return
+     */
+    public String toLowerCaseFirst(String s){
+        if(StringUtils.isEmpty(s)){
+            return "";
+        }
+        if(Character.isLowerCase(s.charAt(0)))
+            return s;
+        else
+            return (new StringBuilder()).append(Character.toLowerCase(s.charAt(0))).append(s.substring(1)).toString();
+    }
+
+    /**
+     * 首字母转大写
+     * @param s
+     * @return
+     */
+    public String toUpperCaseFirst(String s){
+        if(StringUtils.isEmpty(s)){
+            return "";
+        }
+        if(Character.isUpperCase(s.charAt(0)))
+            return s;
+        else
+            return (new StringBuilder()).append(Character.toUpperCase(s.charAt(0))).append(s.substring(1)).toString();
     }
 
     /**
@@ -129,7 +163,7 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
     /**
      * 初始化输出目录
      */
-    private void initOutputFiles() {
+    private void initOutputFiles(ConfigBuilder config) {
         outputFiles = new HashMap<String, String>();
         Map<String, String> pathInfo = config.getPathInfo();
         outputFiles.put(ConstVal.ENTITY, pathInfo.get(ConstVal.ENTITY_PATH) + ConstVal.ENTITY_NAME);
@@ -140,6 +174,18 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
         outputFiles.put(ConstVal.SERIVCE, pathInfo.get(ConstVal.SERIVCE_PATH) + ConstVal.SERVICE_NAME);
         outputFiles.put(ConstVal.SERVICEIMPL, pathInfo.get(ConstVal.SERVICEIMPL_PATH) + ConstVal.SERVICEIMPL_NAME);
         outputFiles.put(ConstVal.CONTROLLER, pathInfo.get(ConstVal.CONTROLLER_PATH) + ConstVal.CONTROLLER_NAME);
+
+
+        ////////////////////// TS 前端配置  ////////////////////
+        outputFiles.put(ConstVal.TS_MODELS, pathInfo.get(ConstVal.TS_MODELS_PATH) + ConstVal.TS_MODELS_NAME);
+
+        // 根据表字段处理动态输出目录配置上文件后缀名
+        for (TableInfo tableInfo: config.getTableInfoList()){
+            String tableName = tableInfo.getName();
+            outputFiles.put(ConstVal.TS_PAGES.concat(tableName), pathInfo.get(ConstVal.TS_PAGES_PATH.concat(tableName)) + ConstVal.TS_PAGES_NAME);
+            outputFiles.put(ConstVal.TS_PAGES_COMPONENT.concat(tableName), pathInfo.get(ConstVal.TS_PAGES_COMPONENT_PATH.concat(tableName)) + ConstVal.TS_PAGES_COMPONENT_NAME);
+        }
+        outputFiles.put(ConstVal.TS_SERVICES, pathInfo.get(ConstVal.TS_SERVICES_PATH) + ConstVal.TS_SERVICES_NAME);
     }
 
     /**
@@ -156,6 +202,16 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
             String xmlFile = String.format(outputFiles.get(ConstVal.XML), entityName);
             String serviceFile = String.format(outputFiles.get(ConstVal.SERIVCE), entityName);
             String controllerFile = String.format(outputFiles.get(ConstVal.CONTROLLER), entityName);
+
+
+            // 前端 ts 配置
+            String tsModelsOutPutFile = String.format(outputFiles.get(ConstVal.TS_MODELS), context.get("tsNameLowerFirst"));
+            TableInfo tableInfo = (TableInfo) context.get("table");
+            String tsPagesOutPutFile = String.format(outputFiles.get(ConstVal.TS_PAGES.concat(tableInfo.getName())), "index");
+            String tsPagesDataOutPutFile = String.format(outputFiles.get(ConstVal.TS_PAGES.concat(tableInfo.getName())), "data.d");
+            String tsPagesCreateComponentOutPutFile = String.format(outputFiles.get(ConstVal.TS_PAGES_COMPONENT.concat(tableInfo.getName())), "CreateForm");
+            String tsPagesUpdateComponentOutPutFile = String.format(outputFiles.get(ConstVal.TS_PAGES_COMPONENT.concat(tableInfo.getName())), "UpdateForm");
+            String tsServicesOutPutFile = String.format(outputFiles.get(ConstVal.TS_SERVICES), context.get("tsNameLowerFirst"));
 
             // 根据override标识来判断是否需要创建文件
             if (isCreate(entityFile)) {
@@ -178,6 +234,26 @@ public class FreemarkerGenerateMojo extends AbstractGenerateMojo {
             }
             if (isCreate(controllerFile)) {
                 vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_CONTROLLER, controllerFile);
+            }
+
+            // 前端 ts 配置
+            if (isCreate(tsModelsOutPutFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_TS_MODELS, tsModelsOutPutFile);
+            }
+            if (isCreate(tsPagesOutPutFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_TS_PAGES, tsPagesOutPutFile);
+            }
+            if (isCreate(tsServicesOutPutFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_TS_PAGES_DATA, tsPagesDataOutPutFile);
+            }
+            if (isCreate(tsServicesOutPutFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_TS_PAGES_COMPONENT_CREATE, tsPagesCreateComponentOutPutFile);
+            }
+            if (isCreate(tsServicesOutPutFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_TS_PAGES_COMPONENT_UPDATE, tsPagesUpdateComponentOutPutFile);
+            }
+            if (isCreate(tsServicesOutPutFile)) {
+                vmToFile(context, ConstVal.FREEMARKER_TEMPLATE_TS_SERVICES, tsServicesOutPutFile);
             }
         } catch (TemplateException e) {
             e.printStackTrace();

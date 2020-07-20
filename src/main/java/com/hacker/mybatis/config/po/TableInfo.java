@@ -18,6 +18,7 @@ public class TableInfo {
     private String name;
     private String comment;
 
+    private String tsNameUpperFirst;
     private String entityName;
     private String mapperName;
     private String qoName;
@@ -30,6 +31,14 @@ public class TableInfo {
     private String fieldNames;
     private boolean hasDate;
     private String PRI;
+
+    public String getTsNameUpperFirst() {
+        return tsNameUpperFirst;
+    }
+
+    public void setTsNameUpperFirst(String tsNameUpperFirst) {
+        this.tsNameUpperFirst = tsNameUpperFirst;
+    }
 
     public String getName() {
         return name;

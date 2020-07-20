@@ -65,6 +65,27 @@ public class PackageConfig {
     @Parameter(defaultValue = "mapper.xml")
     private String xml;
 
+    /**
+     * ts pages 包名
+     */
+    @Parameter(defaultValue = "pages")
+    private String tsPages;
+
+
+    @Parameter(defaultValue = "pages.component")
+    private String tsPagesComponent;
+    /**
+     * ts models 包名
+     */
+    @Parameter(defaultValue = "models")
+    private String tsModels;
+
+    /**
+     * ts services 包名
+     */
+    @Parameter(defaultValue = "services")
+    private String tsServices;
+
     public String getParent() {
         return parent;
     }
@@ -101,8 +122,24 @@ public class PackageConfig {
         return controller;
     }
 
+    public String getTsPages() {
+        return tsPages;
+    }
 
-    public PackageConfig(){
+    public String getTsPagesComponent() {
+        return tsPagesComponent;
+    }
+
+    public String getTsModels() {
+        return tsModels;
+    }
+
+    public String getTsServices() {
+        return tsServices;
+    }
+
+
+    public PackageConfig() {
 
     }
 

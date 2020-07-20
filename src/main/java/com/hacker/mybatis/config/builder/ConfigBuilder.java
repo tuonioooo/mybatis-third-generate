@@ -72,9 +72,9 @@ public class ConfigBuilder {
      */
     public ConfigBuilder(PackageConfig packageConfig, DataSourceConfig dataSourceConfig,
                          StrategyConfig strategyConfig, String outputDir) {
-        handlerPackage(outputDir, packageConfig);
         handlerDataSource(dataSourceConfig);
         handlerStrategy(strategyConfig);
+        handlerPackage(outputDir, packageConfig);
     }
 
     //************************ 曝露方法 BEGIN*****************************
@@ -157,6 +157,24 @@ public class ConfigBuilder {
         packageInfo.put(ConstVal.SERVICEIMPL, joinPackage(package_parent, config.getServiceImpl()));
         packageInfo.put(ConstVal.CONTROLLER, joinPackage(package_parent, config.getController()));
 
+
+
+        //前端ts 配置
+        String package_web_parent = StringUtils.isEmpty(config.getParent()) ? ConstVal.DEFAULT_WEB_PACKAGE_PARENT : config.getParent();
+        packageInfo.put(ConstVal.TS_MODELS, joinPackage(package_web_parent, config.getTsModels()));
+        // 根据表字段处理动态包
+        for (TableInfo tableInfo: tableInfoList){
+            String dymaicPagesPackage = config.getTsPages().concat(".").concat(toLowerCaseFirst(tableInfo.getTsNameUpperFirst()));
+            String dymaicComponentsPackage = dymaicPagesPackage.concat(".").concat(toLowerCaseFirst(config.getTsPagesComponent()));
+            packageInfo.put(ConstVal.TS_PAGES.concat(tableInfo.getName()), joinPackage(package_web_parent, dymaicPagesPackage));
+            packageInfo.put(ConstVal.TS_PAGES_COMPONENT.concat(tableInfo.getName()), joinPackage(package_web_parent, dymaicComponentsPackage));
+
+        }
+        packageInfo.put(ConstVal.TS_SERVICES, joinPackage(package_web_parent, config.getTsServices()));
+
+
+
+
         pathInfo = new HashMap<String, String>();
 
         pathInfo.put(ConstVal.ENTITY_PATH, joinPath(outputDir, packageInfo.get(ConstVal.ENTITY)));
@@ -167,6 +185,16 @@ public class ConfigBuilder {
         pathInfo.put(ConstVal.SERIVCE_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERIVCE)));
         pathInfo.put(ConstVal.SERVICEIMPL_PATH, joinPath(outputDir, packageInfo.get(ConstVal.SERVICEIMPL)));
         pathInfo.put(ConstVal.CONTROLLER_PATH, joinPath(outputDir, packageInfo.get(ConstVal.CONTROLLER)));
+
+
+        //前端ts 配置
+        pathInfo.put(ConstVal.TS_MODELS_PATH, joinPath(outputDir, packageInfo.get(ConstVal.TS_MODELS)));
+        // 根据表字段处理动态输出路径
+        for (TableInfo tableInfo: tableInfoList){
+            pathInfo.put(ConstVal.TS_PAGES_PATH.concat(tableInfo.getName()), joinPath(outputDir, packageInfo.get(ConstVal.TS_PAGES.concat(tableInfo.getName()))));
+            pathInfo.put(ConstVal.TS_PAGES_COMPONENT_PATH.concat(tableInfo.getName()), joinPath(outputDir, packageInfo.get(ConstVal.TS_PAGES_COMPONENT.concat(tableInfo.getName()))));
+        }
+        pathInfo.put(ConstVal.TS_SERVICES_PATH, joinPath(outputDir, packageInfo.get(ConstVal.TS_SERVICES)));
     }
 
     /**
@@ -237,6 +265,7 @@ public class ConfigBuilder {
         for (TableInfo tableInfo : tableList) {
             String tempName = handleSuffixT(capitalFirst(processName(tableInfo.getName(), strategy)));
             tableInfo.setEntityName(tempName);
+            tableInfo.setTsNameUpperFirst(tempName);
             tableInfo.setMapperName(tableInfo.getEntityName() + ConstVal.MAPPER);
             tableInfo.setQoName(tableInfo.getEntityName() + ConstVal.QO);
             tableInfo.setVoName(tableInfo.getEntityName() + ConstVal.VO);
@@ -361,6 +390,7 @@ public class ConfigBuilder {
             field.setCapitalType(processMySqlTypeToUpperCase(processFiledType(field.getType())));
             field.setPropertyName(processName(field.getName(), strategy));
             field.setPropertyType(processFiledType(field.getType()));
+            field.setTsPropertyType(processMySqlToTypeScriptType(processFiledType(field.getType())));
             field.setComment(results.getString(querySQL.getFieldComment()));
             fieldList.add(field);
         }
@@ -503,6 +533,29 @@ public class ConfigBuilder {
             return "DOUBLE";
         }
         return "VARCHAR";
+    }
+
+    /**
+     * MYSQL字段类型转换 typscript
+     *
+     * @param type 字段类型
+     * @return JAVA类型
+     */
+    private String processMySqlToTypeScriptType(String type) {
+        if (type.equalsIgnoreCase("string")) {
+            return "string";
+        } else if (type.equalsIgnoreCase("long") ||
+                type.equalsIgnoreCase("integer") ||
+                type.equalsIgnoreCase("float") ||
+                type.equalsIgnoreCase("double") ||
+                type.equalsIgnoreCase("BigDecimal")) {
+            return "number";
+        } else if (type.equalsIgnoreCase("date")) {
+            return "Date";
+        } else if (type.equalsIgnoreCase("boolean")) {
+            return "boolean";
+        }
+        return "any";
     }
 
     /**
