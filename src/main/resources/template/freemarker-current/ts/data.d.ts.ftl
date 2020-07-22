@@ -4,7 +4,7 @@ import TextArea from "antd/lib/input/TextArea";
 import React from "react";
 // @ts-ignore
 import {ProColumns} from "@ant-design/pro-table";
-
+import { EditTwoTone, DeleteTwoTone } from "@ant-design/icons";
 
 /*
 * 定义数据字段
@@ -56,13 +56,17 @@ export const ${tsNameUpperFirst}FormItemList = (props?: any) => (
         label: '${field.comment}',
         <#if field.propertyName == "effect" || field.propertyName == "status" || field.propertyName == "remark" || field.propertyName == "desc" || field.propertyName == "description">
         <#else>
+
         rules: [    //表单校验规则
             {
             required: true,
+            <#if field.propertyType == "Integer">
+            type: "number",
+            </#if>
             message: '${field.comment}为必填项',
             },
-            <#if field.propertyName?contains("name") || field.propertyName?contains("title")>
-                { validator: props.validatorExist },
+            <#if field.propertyName?contains("name") || field.propertyName?contains("Name") || field.propertyName?contains("title") || field.propertyName?contains("word")>
+            { validator: props.validatorExist },
             </#if>
         ],
         </#if>
@@ -71,14 +75,16 @@ export const ${tsNameUpperFirst}FormItemList = (props?: any) => (
             <Switch checkedChildren={"开启"} unCheckedChildren={"禁用"}
                     checked={props.${field.propertyName}Checked}
                     onClick={(checked, event) => props.handleSwitch('${field.propertyName}', checked)}
+                />
         <#elseif field.propertyName?contains("remark") || field.propertyName?contains("describe") || field.propertyName?contains("description")>
             <TextArea placeholder={'请输入备注'} />
         <#elseif field.propertyType == "date" || field.propertyType == "LocalDateTime">
             <DatePicker />
+        <#elseif field.propertyType == "Integer">
+            <InputNumber min={1} max={50}/>
         <#elseif field.propertyName?contains("password")>
             <Input.Password placeholder={'请输入密码'} autoComplete="new-password"/> //autoComplete解决表单自动填充问题
         <#else>
-
             <Input placeholder={'请输入${field.comment}'} autoComplete={'new-${field.propertyName}'}/>
         </#if>
         )
@@ -114,12 +120,32 @@ export const columns = (props: ${tsNameUpperFirst}HandleTableListItemRender): Pr
             },
         <#elseif field.propertyName == "remove">
         <#elseif field.propertyName?contains("remark") || field.propertyName?contains("describe") || field.propertyName?contains("description")>
+        <#elseif field.propertyName == "lastModified" || field.propertyName == "createTime" || field.propertyName == "createTimeStr" || field.propertyName == "lastModifiedStr">
+            {
+            title: '${field.comment}',
+            dataIndex: '${field.propertyName}',
+            hideInSearch: true, // 查询表单中不展示此项
+            sorter: (a: any, b: any) => {//时间排序
+                return Date.parse(a.${field.propertyName}) - Date.parse(b.${field.propertyName})
+            }
+            },
+        <#elseif field.propertyName == "sort" || field.propertyName == "ordernum" || field.propertyName == "orderNum">
+            {
+            title: '${field.comment}',
+            dataIndex: '${field.propertyName}',
+            hideInSearch: true, // 查询表单中不展示此项
+            sorter: (a: any, b: any) => {//数字排序
+                return a.${field.propertyName} - b.${field.propertyName}
+            }
+            },
         <#else>
             {
             title: '${field.comment}',
             dataIndex: '${field.propertyName}',
             hideInSearch: true, // 查询表单中不展示此项
+            <#if field.propertyName?contains("name") || field.propertyName?contains("title") || field.propertyName?contains("word")>
             copyable: true, //表格列支持复制
+            </#if>
             },
         </#if>
     </#if>

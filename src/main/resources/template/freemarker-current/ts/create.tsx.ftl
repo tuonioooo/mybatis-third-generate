@@ -11,8 +11,8 @@ import {exist${tsNameUpperFirst}Name} from "@/services/${tsNameLowerFirst}";
 
 
 export interface ModalDispatchFormOptionProps extends ModalFormOptionProps<${tsNameUpperFirst}FormItem> {
-    dispatch: Dispatch;
-    resultData: ResultData;
+    dispatch?: Dispatch;
+    resultData?: ResultData;
 }
 /**
 * ${table.comment}创建表单组件
@@ -75,23 +75,31 @@ const CreateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     }
 
 
-   /**
-    * 检测***名称是否存在
-    * @param props
-    */
-    const validatorExist =  (rule: any, name: string, callback: (message?: string) => void) => {
-        let payload = {username: name};
-        exist${tsNameUpperFirst}Name(payload).then(res => {
-            if (res.code == 200) {
-                callback();
-            } else {
-                callback('用户名已存在');
-            }
-        }).catch(error => {
-            callback('服务异常')
-        });
-    };
 
+<#list table.fields as field>
+<#if field.propertyName?contains("name") || field.propertyName?contains("title") || field.propertyName?contains("word")  || field.propertyName?contains("author")>
+    /**
+     * 检测${field.comment}是否存在
+     * @param props
+     */
+     const validatorExist =  (rule: any, name: string, callback: (message?: string) => void) => {
+         if(!name){
+            callback();
+         }
+         let payload = {${field.propertyName}: name};
+         exist${tsNameUpperFirst}Name(payload).then(res => {
+         if (res.code == 200) {
+            callback();
+         } else {
+            callback('${field.comment}已存在');
+         }
+         }).catch(error => {
+            callback('服务异常')
+         });
+     };
+    <#break>
+</#if>
+</#list>
     /**
     * 表单字段数据渲染处理
     * @param record

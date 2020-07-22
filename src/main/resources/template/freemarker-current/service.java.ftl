@@ -31,6 +31,10 @@ public class ${entity}Service{
         PageHelper.startPage(${table.qoName?uncap_first}.getPage(), ${table.qoName?uncap_first}.getSize());
         Example example = new Example(${entity}Entity.class);
         Example.Criteria criteria = example.createCriteria();
+        //时间倒序查询
+        example.setOrderByClause("last_modified desc");
+        //租户Id——看需要是否设置租户查询
+        criteria.andEqualTo("tenantId", ${table.qoName?uncap_first}.getTenantId());
         List<${entity}Entity> entities = ${table.mapperName?uncap_first}.selectByExample(example);
             PageInfo<${entity}Entity> pageInfo = new PageInfo<>(entities);
                 long total = pageInfo.getTotal();
@@ -58,7 +62,7 @@ public class ${entity}Service{
             ${entity?uncap_first}Entity = new ${entity}Entity();
             this.setAddOrUpdateAttributes(${entity?uncap_first}Entity, ${table.qoName?uncap_first});
             ${table.mapperName?uncap_first}.insert(${entity?uncap_first}Entity);
-            return ResultData.successMsg("新增成功");
+            return ResultData.successMsg("添加成功");
         } else {
             //修改
             ${entity?uncap_first}Entity = ${table.mapperName?uncap_first}.selectByPrimaryKey(${table.qoName?uncap_first}.getId());

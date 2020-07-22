@@ -30,7 +30,7 @@ data: stringify(params),
 * @param params
 */
 export async function get${tsNameUpperFirst}(params: {}) {
-return request(`${r"${"}Constant.baseUrl${r"}"}/${tsNameLowerFirst}/get`, {
+return request(`${r"${"}Constant.baseUrl${r"}"}/${tsNameLowerFirst}/getDetailById`, {
 method: 'POST',
 data: stringify(params),
 });
@@ -63,7 +63,7 @@ data: stringify(params),
 * @param params
 */
 export async function del${tsNameUpperFirst}(params: {}) {
-return request(`${r"${"}Constant.baseUrl${r"}"}/${tsNameLowerFirst}/del`, {
+return request(`${r"${"}Constant.baseUrl${r"}"}/${tsNameLowerFirst}/deleteById`, {
 method: 'POST',
 data: stringify(params),
 });

@@ -8,11 +8,11 @@ import {ModalFormOptionProps, ResultData} from "@/utils/types";
 import { connect, Dispatch } from "umi";
 import VerticalFormItem from "@/components/VerticalFormItem";
 import {exist${tsNameUpperFirst}Name, get${tsNameUpperFirst}} from "@/services/${tsNameLowerFirst}";
-
+import { Constant } from "@/utils/constant";
 
 export interface ModalDispatchFormOptionProps extends ModalFormOptionProps<${tsNameUpperFirst}FormItem> {
-    dispatch: Dispatch;
-    resultData: ResultData;
+    dispatch?: Dispatch;
+    resultData?: ResultData;
 }
 
 /**
@@ -26,7 +26,7 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
    //const {dispatch, resultData} = props;
 <#list table.fields as field>
     <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
-        const [${field.propertyName}Checked, handle${field.propertyName?cap_first}Checked] = useState(true);
+        const [${field.propertyName}Checked, handle${field.propertyName?cap_first}Checked] = useState(false);
         const [${field.propertyName}FormValue, handle${field.propertyName?cap_first}FormValue] = useState('ON');
     </#if>
 </#list>
@@ -40,7 +40,18 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     */
     useEffect(() => {
     // 设置表单初始化默认值，如果与Form子元素冲突，以Form 为准
-    form.setFieldsValue(record);
+    if (form && !modalVisible) {
+<#list table.fields as field>
+    <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
+        handle${field.propertyName?cap_first}Checked(false);//重置状态的默认值
+        handle${field.propertyName?cap_first}FormValue('ON');
+    </#if>
+</#list>
+    }
+
+    //获取记录信息下面两者选其一
+    getDetail();
+    //form.setFieldsValue(record);
 <#list table.fields as field>
     <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
     handle${field.propertyName?cap_first}Checked(record.${field.propertyName} === ${field.propertyName}FormValue);
@@ -52,7 +63,6 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     //   payload: ''
     // })
 
-        getDetail();
     }, [modalVisible]);
 
 
@@ -61,11 +71,12 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     */
     const getDetail = async () => {
         let resultData: ResultData = await get${tsNameUpperFirst}({id: record.id})
-        if(resultData.code == 200){
+        if(resultData.code == Constant.success){
             form.setFieldsValue(resultData.data);
         }else{
             resultData.msg && message.error(resultData.msg);
         }
+
     }
 
   /**
@@ -84,25 +95,30 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
 </#list>
     }
 
-   /**
-    * 检测名称是否存在
+<#list table.fields as field>
+<#if field.propertyName?contains("name") || field.propertyName?contains("Name") || field.propertyName?contains("title") || field.propertyName?contains("word")  || field.propertyName?contains("author")>
+    /**
+    * 检测${field.comment}是否存在
     * @param props
     */
     const validatorExist =  (rule: any, name: string, callback: (message?: string) => void) => {
         if(!name){
             callback();
         }
-        let payload = {name: name};
-        exist${tsNameUpperFirst}Name(payload).then(res => {
+        let payload = {${field.propertyName}: name, id:record.id};
+            exist${tsNameUpperFirst}Name(payload).then(res => {
         if (res.code == 200) {
             callback();
         } else {
-            callback('名称已存在');
+            callback('${field.comment}已存在');
         }
         }).catch(error => {
             callback('服务异常')
         });
     };
+    <#break>
+</#if>
+</#list>
 
     /**
     * 表单字段数据渲染处理

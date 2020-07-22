@@ -30,6 +30,7 @@ const actionRef = useRef<ActionType>();
 
 // 自定义表格查询请求
 const handleRequest = async (params: any) => {
+//jpa框架 ：params.current-1 ，myabtis：params.current
 let result = await query${tsNameUpperFirst}PageList({...params, page: params.current-1, size: params.pageSize})
 result.data.list.map((item: ${tsNameUpperFirst}TableListItem, key: number) => {
 item.key = key // 设置list unique key
