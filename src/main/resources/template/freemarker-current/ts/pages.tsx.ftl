@@ -1,6 +1,6 @@
 
 import { PlusOutlined} from '@ant-design/icons';
-import {Button} from 'antd';
+import {Button, message} from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageHeaderWrapper } from '@ant-design/pro-layout';
 // @ts-ignore
@@ -10,7 +10,8 @@ import { query${tsNameUpperFirst}PageList } from '@/services/${tsNameLowerFirst}
 import CreateForm from "./components/CreateForm";
 import UpdateForm from './components/UpdateForm';
 import {connect} from "umi";
-import { TableListProps } from '@/utils/types';
+import { ResultData, TableListProps } from '@/utils/types';
+import {Constant} from "@/utils/constant";
 
 
 
@@ -42,6 +43,19 @@ success:result.code == 200,
 }
 return res;
 };
+
+/**
+* 获取详情信息并且设置表单form的默认值传递给子组件UpdateForm中
+*/
+const getDetail = async (props:any, record: ${tsNameLowerFirst}TableListItem) => {
+let result: ResultData = await get${tsNameLowerFirst}({id: record.id})
+if (result.code == Constant.success) {
+props.setFormValues(result.data);
+props.handleUpdateModalVisible(true);
+} else {
+result.msg && message.error(result.msg);
+}
+}
 
 
 const handleAdd =  (payload:any) => {
@@ -93,6 +107,7 @@ return (
             setFormValues,
             handleUpdateModalVisible,
             handleDelete,
+            getDetail,
         })}
         rowSelection={{}}
         // 表格触发标识

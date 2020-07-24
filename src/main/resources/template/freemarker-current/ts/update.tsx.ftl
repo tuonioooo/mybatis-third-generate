@@ -40,7 +40,7 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     */
     useEffect(() => {
     // 设置表单初始化默认值，如果与Form子元素冲突，以Form 为准
-    if (form && !modalVisible) {
+    if (form && !modalVisible) {//重置useState的默认值
 <#list table.fields as field>
     <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
         handle${field.propertyName?cap_first}Checked(false);//重置状态的默认值
@@ -49,14 +49,17 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
 </#list>
     }
 
-    //获取记录信息下面两者选其一
-    getDetail();
-    //form.setFieldsValue(record);
+    //开启弹窗，渲染组件后，执行此方法
+    if(form && modalVisible){
+        form.setFieldsValue(record);
+        //根据数据库中的值设置useState
 <#list table.fields as field>
     <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
-    handle${field.propertyName?cap_first}Checked(record.${field.propertyName} === ${field.propertyName}FormValue);
+        handle${field.propertyName?cap_first}Checked(record.${field.propertyName} === ${field.propertyName}FormValue);
     </#if>
 </#list>
+    }
+
 
     // dispatch({
     //   type: '',
@@ -64,20 +67,6 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     // })
 
     }, [modalVisible]);
-
-
-    /**
-    * 获取详情信息并且设置表单form的默认值
-    */
-    const getDetail = async () => {
-        let resultData: ResultData = await get${tsNameUpperFirst}({id: record.id})
-        if(resultData.code == Constant.success){
-            form.setFieldsValue(resultData.data);
-        }else{
-            resultData.msg && message.error(resultData.msg);
-        }
-
-    }
 
   /**
     * 表单Switch onClick回调

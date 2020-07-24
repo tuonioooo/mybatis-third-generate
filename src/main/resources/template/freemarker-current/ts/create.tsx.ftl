@@ -37,7 +37,7 @@ const CreateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     * componentWillUnmount()等价于 useEffect(()=>{ return ()=>{} )  卸载组件时执行
     */
     useEffect(() => {
-        // 设置表单初始化默认值，如果与Form子元素冲突，以Form 为准
+        // 设置表单初始化默认值，如果与Form子元素冲突，以Form 为准和重置useState的默认值
         if (form && !modalVisible) {
             form.resetFields();
         }

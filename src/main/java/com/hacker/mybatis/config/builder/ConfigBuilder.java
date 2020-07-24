@@ -618,7 +618,7 @@ public class ConfigBuilder {
             return "";
         }
         StringBuilder stringBuilder = new StringBuilder();
-        if(name.endsWith("t") || name.endsWith("T")){
+        if(name.endsWith("t") || name.endsWith("T") || name.endsWith("0")){
             stringBuilder.append(name, 0, name.length()-1);
         }
         return stringBuilder.toString();

@@ -27,6 +27,7 @@ export interface ${tsNameUpperFirst}HandleTableListItemRender {
     setFormValues: (record: ${tsNameUpperFirst}TableListItem) => void;
     handleUpdateModalVisible: (visible: boolean) => void;
     handleDelete: ({}) => void;
+    getDetail: (props:any, record: ${tsNameUpperFirst}TableListItem)=>void;
 }
 
 /**
@@ -157,7 +158,14 @@ export const columns = (props: ${tsNameUpperFirst}HandleTableListItemRender): Pr
         hideInForm: true,
         render: (_:any, record:${tsNameUpperFirst}TableListItem) => (
     <>
-        <a onClick={() => { props.setFormValues(record);  props.handleUpdateModalVisible(true); } } >
+        <a onClick={() => {
+
+                    //方式一，通过表格列获取记录进行操作表单，场景推荐表单修改字段较小的情况下
+                    props.setFormValues(record);
+                    props.handleUpdateModalVisible(true);
+                    //方式二，通过记录Id获取数据，操作表单，场景推荐数据字段较多的情况下
+                    props.getDetail(props, record);
+                    }}>
             <EditTwoTone title={'編輯'}/>
         </a>
         <Divider type="vertical" />

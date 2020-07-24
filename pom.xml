@@ -159,6 +159,7 @@
                             <property>author_t</property>
                             <property>novel_comment_t</property>
                             <property>novel_t</property>
+                            <property>novel_chapter_0</property>
                             <property>hot_word_t</property>
                             <property>novel_category_t</property>
                             <property>novel_rule_t</property>
