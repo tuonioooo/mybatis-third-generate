@@ -44,7 +44,7 @@ const CreateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
         }
 
         if (form && modalVisible){
-
+            form.resetFields();
             form.setFieldsValue({
     <#list table.fields as field>
         <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
@@ -86,21 +86,18 @@ const CreateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
      * 检测${field.comment}是否存在
      * @param props
      */
-     const validatorExist =  (rule: any, name: string, callback: (message?: string) => void) => {
-         if(!name){
-            callback();
-         }
-         let payload = {${field.propertyName}: name};
-         exist${tsNameUpperFirst}Name(payload).then(res => {
-         if (res.code == 200) {
-            callback();
-         } else {
-            callback('${field.comment}已存在');
-         }
-         }).catch(error => {
-            callback('服务异常')
-         });
-     };
+    const validatorExist = async (rule: any, name: string, callback:any) => {
+        if(!name){
+            return Promise.reject();//拒绝
+        }
+        let payload = {author: name};
+        let res:ResultData = await existAuthorName(payload);
+        if (res.code === Constant.success) {
+            return Promise.resolve();//校验通过
+        } else {
+            return Promise.reject(res.msg);
+        }
+    };
     <#break>
 </#if>
 </#list>

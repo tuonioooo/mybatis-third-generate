@@ -90,20 +90,17 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     * 检测${field.comment}是否存在
     * @param props
     */
-    const validatorExist =  (rule: any, name: string, callback: (message?: string) => void) => {
+    const validatorExist = async (rule: any, name: string, callback:any) => {
         if(!name){
-            callback();
+            return Promise.reject();//不能为空
         }
-        let payload = {${field.propertyName}: name, id:record.id};
-            exist${tsNameUpperFirst}Name(payload).then(res => {
-        if (res.code == 200) {
-            callback();
+        let payload = {author: name};
+        let res:ResultData = await existAuthorName(payload);
+        if (res.code === Constant.success) {
+            return Promise.resolve();//校验通过
         } else {
-            callback('${field.comment}已存在');
+            return Promise.reject(res.msg);
         }
-        }).catch(error => {
-            callback('服务异常')
-        });
     };
     <#break>
 </#if>
