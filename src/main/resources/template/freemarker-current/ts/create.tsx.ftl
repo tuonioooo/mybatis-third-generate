@@ -5,6 +5,7 @@ ${tsNameUpperFirst}FormItem,
 ${tsNameUpperFirst}FormItemList
 } from "../data.d";
 import {ModalFormOptionProps, ResultData} from "@/utils/types";
+//@ts-ignore
 import { connect, Dispatch } from "umi";
 import VerticalFormItem from "@/components/VerticalFormItem";
 import {exist${tsNameUpperFirst}Name} from "@/services/${tsNameLowerFirst}";
@@ -39,16 +40,19 @@ const CreateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
     useEffect(() => {
         // 设置表单初始化默认值，如果与Form子元素冲突，以Form 为准和重置useState的默认值
         if (form && !modalVisible) {
-            form.resetFields();
+           //重置useState的默认值
         }
 
-        form.setFieldsValue({
-<#list table.fields as field>
-    <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
-        ${field.propertyName}:${field.propertyName}FormValue,
-    </#if>
-</#list>
-        });
+        if (form && modalVisible){
+
+            form.setFieldsValue({
+    <#list table.fields as field>
+        <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
+            ${field.propertyName}:${field.propertyName}FormValue,
+        </#if>
+    </#list>
+            });
+        }
 
         // dispatch({
         //   type: '',
