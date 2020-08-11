@@ -7,7 +7,7 @@ ${tsNameUpperFirst}FormItemList
 import {ModalFormOptionProps, ResultData} from "@/utils/types";
 import { connect, Dispatch } from "umi";
 import VerticalFormItem from "@/components/VerticalFormItem";
-import {exist${tsNameUpperFirst}Name, get${tsNameUpperFirst}} from "@/services/${tsNameLowerFirst}";
+import {exist${tsNameUpperFirst}Name } from "@/services/${tsNameLowerFirst}";
 import { Constant } from "@/utils/constant";
 
 export interface ModalDispatchFormOptionProps extends ModalFormOptionProps<${tsNameUpperFirst}FormItem> {
@@ -94,8 +94,8 @@ const UpdateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
         if(!name){
             return Promise.reject();//不能为空
         }
-        let payload = {author: name};
-        let res:ResultData = await existAuthorName(payload);
+        let payload = {${field.propertyName}: name, id:record.id};
+        let res:ResultData = await exist${tsNameUpperFirst}Name(payload);
         if (res.code === Constant.success) {
             return Promise.resolve();//校验通过
         } else {

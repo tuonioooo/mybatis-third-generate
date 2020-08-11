@@ -155,7 +155,7 @@
                         <!-- 要包含的表 与exclude 二选一配置-->
                         <include>
                             <!--<property>flow_category_t</property>-->
-                            <property>novel_site_t</property>
+                            <property>member_t</property>
                             <property>author_t</property>
                             <property>novel_comment_t</property>
                             <property>novel_t</property>

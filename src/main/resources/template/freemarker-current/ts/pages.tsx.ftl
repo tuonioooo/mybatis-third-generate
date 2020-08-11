@@ -47,8 +47,8 @@ return res;
 /**
 * 获取详情信息并且设置表单form的默认值传递给子组件UpdateForm中
 */
-const getDetail = async (props:any, record: ${tsNameLowerFirst}TableListItem) => {
-let result: ResultData = await get${tsNameLowerFirst}({id: record.id})
+const getDetail = async (props:any, record: ${tsNameUpperFirst}TableListItem) => {
+let result: ResultData = await get${tsNameUpperFirst}({id: record.id})
 if (result.code == Constant.success) {
 props.setFormValues(result.data);
 props.handleUpdateModalVisible(true);

@@ -9,7 +9,7 @@ import {ModalFormOptionProps, ResultData} from "@/utils/types";
 import { connect, Dispatch } from "umi";
 import VerticalFormItem from "@/components/VerticalFormItem";
 import {exist${tsNameUpperFirst}Name} from "@/services/${tsNameLowerFirst}";
-
+import { Constant } from "@/utils/constant";
 
 export interface ModalDispatchFormOptionProps extends ModalFormOptionProps<${tsNameUpperFirst}FormItem> {
     dispatch?: Dispatch;
@@ -90,8 +90,8 @@ const CreateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
         if(!name){
             return Promise.reject();//拒绝
         }
-        let payload = {author: name};
-        let res:ResultData = await existAuthorName(payload);
+        let payload = {${field.propertyName}: name};
+        let res:ResultData = await exist${tsNameUpperFirst}Name(payload);
         if (res.code === Constant.success) {
             return Promise.resolve();//校验通过
         } else {
