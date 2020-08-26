@@ -21,6 +21,7 @@ public class ${entity}Response{
         <#if field.comment??>
         /** ${field.comment} */
         </#if>
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         private LocalDateTime ${field.propertyName};
     <#elseif field.propertyName == "remove">
     <#else>

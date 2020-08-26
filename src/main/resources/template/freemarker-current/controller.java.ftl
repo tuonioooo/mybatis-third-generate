@@ -15,7 +15,7 @@ public class ${entity}Controller extends BaseController {
 			return ${entity?uncap_first}Service.findPageList(${table.qoName?uncap_first});
 		} catch (Exception e) {
 			log.error("【/${entity?uncap_first}/list】分页列表查询接口出现异常", e);
-			return ResultData.fail("【/${entity?uncap_first}/list】分页列表查询接口出现异常");
+			return ResultData.failMsg("【/${entity?uncap_first}/list】分页列表查询接口出现异常");
 		}
 	}
 
@@ -25,7 +25,7 @@ public class ${entity}Controller extends BaseController {
 			return this.saveOrUpdate(${table.qoName?uncap_first}, bindingResult);
 		}catch (Exception e){
 			log.error("【/${entity?uncap_first}/add】新增接口出现异常", e);
-			return ResultData.fail("【/${entity?uncap_first}/add】新增接口出现异常");
+			return ResultData.failMsg("【/${entity?uncap_first}/add】新增接口出现异常");
 		}
 	}
 
@@ -35,7 +35,7 @@ public class ${entity}Controller extends BaseController {
 			return this.saveOrUpdate(${table.qoName?uncap_first}, bindingResult);
 		}catch (Exception e){
 			log.error("【/${entity?uncap_first}/edit】编辑接口出现异常", e);
-			return ResultData.fail("【/${entity?uncap_first}/edit】编辑接口出现异常");
+			return ResultData.failMsg("【/${entity?uncap_first}/edit】编辑接口出现异常");
 		}
 	}
 
@@ -52,7 +52,7 @@ public class ${entity}Controller extends BaseController {
 			return Objects.isNull(id) ? ResultData.failMsg("id不能为空！") : ${entity?uncap_first}Service.getDetailById(id);
 		} catch (Exception e) {
 			log.error("【/${entity?uncap_first}/getDetailById】获取详情接口出现异常", e);
-			return ResultData.fail("【/${entity?uncap_first}/getDetailById】获取详情接口出现异常");
+			return ResultData.failMsg("【/${entity?uncap_first}/getDetailById】获取详情接口出现异常");
 		}
 	}
 
@@ -62,7 +62,7 @@ public class ${entity}Controller extends BaseController {
 			return ${entity?uncap_first}Service.exist(name, id);
 		} catch (Exception e) {
 			log.error("【/${entity?uncap_first}/exist】名称查重接口出现异常", e);
-			return ResultData.fail("【/${entity?uncap_first}/exist】名称查重接口出现异常");
+			return ResultData.failMsg("【/${entity?uncap_first}/exist】名称查重接口出现异常");
 		}
 	}
 
@@ -75,7 +75,7 @@ public class ${entity}Controller extends BaseController {
 			return ${entity?uncap_first}Service.deleteById(id);
 		} catch (Exception e) {
 			log.error("【/${entity?uncap_first}/deleteById】删除接口出现异常", e);
-			return ResultData.fail("【/${entity?uncap_first}/deleteById】删除接口出现异常");
+			return ResultData.failMsg("【/${entity?uncap_first}/deleteById】删除接口出现异常");
 		}
 	}
 
