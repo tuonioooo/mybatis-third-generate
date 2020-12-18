@@ -54,7 +54,9 @@ export const ${tsNameUpperFirst}FormItemList = (props?: any) => (
     {
         name: '${field.propertyName}',
         key: '${field.propertyName}',
+        <#if field.comment??>
         label: '${field.comment}',
+        </#if>
         <#if field.propertyName == "effect" || field.propertyName == "status" || field.propertyName == "remark" || field.propertyName == "desc" || field.propertyName == "description">
         <#else>
 
@@ -64,7 +66,9 @@ export const ${tsNameUpperFirst}FormItemList = (props?: any) => (
             <#if field.propertyType == "Integer">
             type: "number",
             </#if>
+            <#if field.comment??>
             message: '${field.comment}为必填项',
+            </#if>
             },
             <#if field.propertyName?contains("name") || field.propertyName?contains("Name") || field.propertyName?contains("title") || field.propertyName?contains("word")>
             { validator: props.validatorExist },
@@ -86,7 +90,8 @@ export const ${tsNameUpperFirst}FormItemList = (props?: any) => (
         <#elseif field.propertyName?contains("password")>
             <Input.Password placeholder={'请输入密码'} autoComplete="new-password"/> //autoComplete解决表单自动填充问题
         <#else>
-            <Input placeholder={'请输入${field.comment}'} autoComplete={'new-${field.propertyName}'}/>
+
+            <Input placeholder={'请输入<#if field.comment??>${field.comment}</#if>'} autoComplete={'new-${field.propertyName}'}/>
         </#if>
         )
     },
@@ -111,7 +116,7 @@ export const columns = (props: ${tsNameUpperFirst}HandleTableListItemRender): Pr
     <#if (field.keyFlag?string('yes', 'no'))=='no' && field.propertyName != "tenantId">
         <#if field.propertyName?contains("effect") || field.propertyName?contains("status") || field.propertyName?contains("enable")>
             {
-            title: '${field.comment}',
+            title: '<#if field.comment??>${field.comment}</#if>',
             dataIndex: '${field.propertyName}',
             hideInSearch: true, // 查询表单中不展示此项
             valueEnum: {
@@ -123,7 +128,7 @@ export const columns = (props: ${tsNameUpperFirst}HandleTableListItemRender): Pr
         <#elseif field.propertyName?contains("remark") || field.propertyName?contains("describe") || field.propertyName?contains("description")>
         <#elseif field.propertyName == "lastModified" || field.propertyName == "createTime" || field.propertyName == "createTimeStr" || field.propertyName == "lastModifiedStr">
             {
-            title: '${field.comment}',
+            title: '<#if field.comment??>${field.comment}</#if>',
             dataIndex: '${field.propertyName}',
             hideInSearch: true, // 查询表单中不展示此项
             sorter: (a: any, b: any) => {//时间排序
@@ -132,7 +137,7 @@ export const columns = (props: ${tsNameUpperFirst}HandleTableListItemRender): Pr
             },
         <#elseif field.propertyName == "sort" || field.propertyName == "ordernum" || field.propertyName == "orderNum">
             {
-            title: '${field.comment}',
+            title: '<#if field.comment??>${field.comment}</#if>',
             dataIndex: '${field.propertyName}',
             hideInSearch: true, // 查询表单中不展示此项
             sorter: (a: any, b: any) => {//数字排序
@@ -141,7 +146,7 @@ export const columns = (props: ${tsNameUpperFirst}HandleTableListItemRender): Pr
             },
         <#else>
             {
-            title: '${field.comment}',
+            title: '<#if field.comment??>${field.comment}</#if>',
             dataIndex: '${field.propertyName}',
             hideInSearch: true, // 查询表单中不展示此项
             <#if field.propertyName?contains("name") || field.propertyName?contains("title") || field.propertyName?contains("word")>

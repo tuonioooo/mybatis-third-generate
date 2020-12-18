@@ -76,6 +76,21 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.38</version>
         </dependency>
+
+        <!-- oracle 配置信息 -->
+        <dependency>
+            <groupId>com.oracle.database.jdbc</groupId>
+            <artifactId>ojdbc8</artifactId>
+            <version>19.8.0.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <!-- Cause: java.sql.SQLException: 不支持的字符集 (在类路径中添加 orai18n.jar): ZHS16GBK -->
+        <dependency>
+            <groupId>cn.easyproject</groupId>
+            <artifactId>orai18n</artifactId>
+            <version>12.1.0.2.0</version>
+        </dependency>
+        <!-- oracle 配置信息 -->
     </dependencies>
     <build>
         <resources>
@@ -99,7 +114,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-plugin-plugin</artifactId>
-                <version>3.2</version>
+                <version>3.5</version>
                 <configuration>
                     <goalPrefix>mybatis-generate</goalPrefix>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
@@ -132,13 +147,29 @@
                     <enableCache>true</enableCache>
                     <!-- 开发者名称 -->
                     <author>tuonioooo</author>
-                    <!-- 数据源配置，(必配) -->
+                    <!-- mysql数据源配置，(必配)
                     <dataSource>
                         <driverName>com.mysql.jdbc.Driver</driverName>
                         <url>jdbc:mysql://localhost:3306/novel_mp?useUnicode=true&amp;useSSL=false</url>
                         <username>root</username>
                         <password>root</password>
                     </dataSource>
+                     -->
+                    <!-- oracle数据源配置本地 -->
+                    <!--<dataSource>
+                        <driverName>oracle.jdbc.driver.OracleDriver</driverName>
+                        <url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
+                        <username>test1</username>
+                        <password>test1</password>
+                    </dataSource>-->
+                    <!-- oracle数据源配置易达开发机 切换时需要注意缓存的问题 -->
+                    <dataSource>
+                        <driverName>oracle.jdbc.driver.OracleDriver</driverName>
+                        <url>jdbc:oracle:thin:@192.168.0.200:1521:orcl</url>
+                        <username>fwq</username>
+                        <password>fwq</password>
+                    </dataSource>
+
                     <strategy>
                         <!-- 字段生成策略，四种类型，从名称就能看出来含义
                         nochange(默认),
@@ -155,16 +186,14 @@
                         <!-- 要包含的表 与exclude 二选一配置-->
                         <include>
                             <!--<property>flow_category_t</property>-->
-                            <property>history_t</property>
-                            <property>banner_t</property>
-                            <property>avatar_t</property>
-                            <property>author_t</property>
-                            <property>novel_comment_t</property>
-                            <property>novel_t</property>
-                            <property>novel_chapter_0</property>
-                            <property>hot_word_t</property>
-                            <property>novel_category_t</property>
-                            <property>novel_rule_t</property>
+                            <!--<property>order_t</property>-->
+                            <!-- 变电站数据表 -->
+                            <property>EQU_PI_SUBSTATION</property>
+                            <!-- 主变数据表 -->
+                            <property>EQU_TE_TRANSFORMER</property>
+                            <!-- 线路数据表 -->
+                            <property>EQU_TE_LINE</property>
+
                             <!--<property>permission_group_permission_r</property>-->
                             <!--<property>permission_group_t</property>-->
                             <!--<property>permission_t</property>-->
@@ -190,7 +219,7 @@
                     </strategy>
                     <packageInfo>
                         <!-- 父级包名称，如果不写，下面的service等就需要写全包名(默认com.hacker) -->
-                        <parent>com.novelmp.db</parent>
+                        <parent>com.orderboot.db</parent>
                         <!--service包名(默认service)-->
                         <service>service</service>
                         <!--serviceImpl包名(默认service.impl)-->
@@ -207,11 +236,13 @@
                         <controller>controller</controller>
 
 
-                        <!-- ts 前端组件包 生成 -->
+                        <!-- ts 前端组件包 生成-->
+
                         <tsPages>ts.pages</tsPages>
                         <tsPagesComponent>components</tsPagesComponent>
                         <tsModels>ts.models</tsModels>
                         <tsServices>ts.services</tsServices>
+
                     </packageInfo>
                     <student>
                         <name>allen</name>
