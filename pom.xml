@@ -155,21 +155,21 @@
                         <password>root</password>
                     </dataSource>
                      -->
-                    <!-- oracle数据源配置本地 -->
-                    <!--<dataSource>
+                    <!-- oracle数据源配置本地 -->-->
+                    <dataSource>
                         <driverName>oracle.jdbc.driver.OracleDriver</driverName>
                         <url>jdbc:oracle:thin:@127.0.0.1:1521:orcl</url>
                         <username>test1</username>
                         <password>test1</password>
-                    </dataSource>-->
-                    <!-- oracle数据源配置易达开发机 切换时需要注意缓存的问题 -->
+                    </dataSource>
+                    <!-- oracle数据源配置易达开发机 切换时需要注意缓存的问题
                     <dataSource>
                         <driverName>oracle.jdbc.driver.OracleDriver</driverName>
                         <url>jdbc:oracle:thin:@192.168.0.200:1521:orcl</url>
                         <username>fwq</username>
                         <password>fwq</password>
                     </dataSource>
-
+                    -->
                     <strategy>
                         <!-- 字段生成策略，四种类型，从名称就能看出来含义
                         nochange(默认),
@@ -193,6 +193,20 @@
                             <property>EQU_TE_TRANSFORMER</property>
                             <!-- 线路数据表 -->
                             <property>EQU_TE_LINE</property>
+                            <!-- 地图表 -->
+                            <property>G_DATA_LINE</property>
+
+                            <property>G_DATA_SCENE</property>
+
+                            <property>G_DATA_POINT</property>
+
+                            <property>G_DATA_SYMBOL</property>
+
+                            <property>G_DATA_TEXT</property>
+
+
+
+
 
                             <!--<property>permission_group_permission_r</property>-->
                             <!--<property>permission_group_t</property>-->

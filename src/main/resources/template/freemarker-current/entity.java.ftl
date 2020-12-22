@@ -14,7 +14,7 @@ import java.util.Date;
 import java.io.Serializable;
 
 /**
- * <p> ${table.comment} </p>
+ * <p> <#if table.comment??>${table.comment}</#if> </p>
  *
  * @author daizhao ${currentTime}
  */

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 
 /**
-* <p> ${table.comment}数据返回封装 </p>
+* <p> <#if table.comment??>${table.comment}</#if>数据返回封装 </p>
 *
 * @author daizhao ${currentTime}
 */

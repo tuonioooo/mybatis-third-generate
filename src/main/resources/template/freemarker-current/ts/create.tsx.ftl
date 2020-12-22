@@ -16,7 +16,7 @@ export interface ModalDispatchFormOptionProps extends ModalFormOptionProps<${tsN
     resultData?: ResultData;
 }
 /**
-* ${table.comment}创建表单组件
+* <#if table.comment??>${table.comment}</#if>创建表单组件
 * @param props
 * @constructor
 */
@@ -83,7 +83,7 @@ const CreateForm: React.FC<ModalDispatchFormOptionProps> = (props) => {
 <#list table.fields as field>
 <#if field.propertyName?contains("name") || field.propertyName?contains("title") || field.propertyName?contains("word")  || field.propertyName?contains("author")>
     /**
-     * 检测${field.comment}是否存在
+     * 检测<#if field.comment??>${field.comment}</#if>是否存在
      * @param props
      */
     const validatorExist = async (rule: any, name: string, callback:any) => {
